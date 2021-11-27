@@ -2,32 +2,38 @@ const menu_sub = document.querySelectorAll('.menu_sub');
 const active_items = [];
 
 for (let k = 0; k < menu_sub.length; k++) {
-  // присваиваем ID элементу меню
+  // РїСЂРёСЃРІР°РёРІР°РµРј ID СЌР»РµРјРµРЅС‚Сѓ РјРµРЅСЋ
   if (!menu_sub[k].id) {
     menu_sub[k].setAttribute('id', `menu_item${k}`);
   }
   
-  // получаем ссылку на пункт верхнего меню
+  // РїРѕР»СѓС‡Р°РµРј СЃСЃС‹Р»РєСѓ РЅР° РїСѓРЅРєС‚ РІРµСЂС…РЅРµРіРѕ РјРµРЅСЋ
   const menu_item = menu_sub[k].closest('ul .menu__item');
-  // подписываемся на показ меню
+  // РїРѕРґРїРёСЃС‹РІР°РµРјСЃСЏ РЅР° РїРѕРєР°Р· РјРµРЅСЋ
   menu_item.onclick = function() {
-    // выключение активных меню
+    // РћС‚РєСЂС‹С‚Рѕ Р»Рё С‚РµРєСѓС‰РµРµ РјРµРЅСЋ?
+    const isCurrentMenuOpen = (menu_sub[k].classList.contains('menu_active'));
+
+    // РІС‹РєР»СЋС‡РµРЅРёРµ Р°РєС‚РёРІРЅС‹С… РјРµРЅСЋ
     active_items.forEach((o) => {
       const el = document.getElementById(o);
       if (el) {
         el.classList.remove('menu_active');
       }
     });
-    // активация выбранного меню
-    menu_sub[k].classList.add('menu_active');
-    // сохранение активного меню
-    active_items.splice(0, active_items.length);
-    active_items.push(menu_sub[k].id);
+    
+    if (!isCurrentMenuOpen) {
+      // Р°РєС‚РёРІР°С†РёСЏ РІС‹Р±СЂР°РЅРЅРѕРіРѕ РјРµРЅСЋ
+      menu_sub[k].classList.add('menu_active');
+      // СЃРѕС…СЂР°РЅРµРЅРёРµ Р°РєС‚РёРІРЅРѕРіРѕ РјРµРЅСЋ
+      active_items.splice(0, active_items.length);
+      active_items.push(menu_sub[k].id);
+    }
   }
 
-  // Получаем дочернюю ссылку пункта меню
+  // РџРѕР»СѓС‡Р°РµРј РґРѕС‡РµСЂРЅСЋСЋ СЃСЃС‹Р»РєСѓ РїСѓРЅРєС‚Р° РјРµРЅСЋ
   const link = menu_item.querySelector('a');
-  // запрещаем клик на ссылке
+  // Р·Р°РїСЂРµС‰Р°РµРј РєР»РёРє РЅР° СЃСЃС‹Р»РєРµ
   link.onclick = function(evt) {
     evt.preventDefault();
   } 
