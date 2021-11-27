@@ -24,6 +24,23 @@ class Game {
       В случае правильного ввода слова вызываем this.success()
       При неправильном вводе символа - this.fail();
      */
+      document.addEventListener('keydown', this.keyboardHandler.bind(this));
+  }
+
+  keyboardHandler(event) {
+    const {key /*, code, ctrlKey*/} = event;
+    const currentSymbol = this.currentSymbol.textContent;
+    if (key.toUpperCase() === currentSymbol.toUpperCase()) {
+      this.success();
+    } else {
+      this.fail();
+    }
+    // console.log(key, code, ctrlKey);
+  }
+
+  readWord() {
+    // был пустой селектор, не было return
+    return this.wordElement.querySelectorAll('.symbol');
   }
 
   success() {
@@ -87,4 +104,3 @@ class Game {
 }
 
 new Game(document.getElementById('game'))
-
