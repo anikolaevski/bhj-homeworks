@@ -68,7 +68,19 @@ class Autocomplete {
   }
 
   getMatches( text ) {
-    /*
+    const ret = [];
+    let i = 0;
+    const searchList = this.input.querySelectorAll(`option`);
+    // console.log(searchList);
+    for (let k = 0; k < searchList.length; k++) {
+      if (searchList[k].innerText.toUpperCase().indexOf(text.toUpperCase()) === 0) {
+        ret.push({
+          text: searchList[k].innerText,
+          value: ++i
+        });
+      }
+    }
+    /* DONE
       TODO: этот метод нужно дописать
       text - фраза, которую вводят в поле поиска
       Метод должен вернуть массив.
@@ -81,12 +93,13 @@ class Autocomplete {
         value: 'Содержимое атрибута value'
       }
     */
-    return [
-      {
-        text: 'Чубакка',
-        value: '1'
-      }
-    ];
+    return ret;
+    // [
+    //   {
+    //     text: 'Чубакка',
+    //     value: '1'
+    //   }
+    // ];
   }
 }
 
