@@ -1,6 +1,4 @@
-const has_tooltip = document.querySelectorAll('.has-tooltip');
-
-has_tooltip.forEach(o => {
+document.querySelectorAll('.has-tooltip').forEach(o => {
     o.addEventListener('click', (evt) => {
         evt.preventDefault();
         const tooltips = document.querySelectorAll('.tooltip_active');
@@ -22,5 +20,3 @@ has_tooltip.forEach(o => {
         el.style.top = `${window.scrollY + bottom}px`;
     });
 });
-
-// function showTooltip(el) 
