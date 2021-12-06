@@ -2,10 +2,7 @@ const cartProducts = document.querySelector('.cart__products');
 const products = document.querySelectorAll('.product');
 
 products.forEach((o) => {
-    const productTitle = o.querySelector('.product__title').innerText;
     const dataId = parseInt(o.getAttribute('data-id'), 10);
-    // console.log(productTitle, dataId);
-
     const productQuantityValue = o.querySelector('.product__quantity-value');
     o.querySelector('.product__quantity-control_inc').addEventListener('click', (evt) => {
         let value = parseInt(productQuantityValue.innerText, 10);
@@ -14,7 +11,7 @@ products.forEach((o) => {
     });
     o.querySelector('.product__quantity-control_dec').addEventListener('click', (evt) => {
         let value = parseInt(productQuantityValue.innerText, 10);
-        if (value >= 1) {
+        if (value > 1) {
             value -= 1;
         }
         productQuantityValue.innerText = value.toString();
