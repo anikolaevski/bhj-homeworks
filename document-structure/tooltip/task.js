@@ -10,7 +10,6 @@ hasTooltip.forEach(o => {
         for (let k = 0; k < tooltips.length; k++) {
             tooltips[k].remove();
         }
-    // o.removeAttribute('data-tooltip');
         if (!is_active) {
             const {bottom, left} = o.getBoundingClientRect();
             // console.log(o.title, bottom, window.scrollY );
@@ -27,9 +26,6 @@ hasTooltip.forEach(o => {
             el.classList.add('tooltip_active');
             o.setAttribute('data-tooltip','1');
         } 
-        // else {
-            // o.removeAttribute('data-tooltip');
-        // }
     });
 });
 
