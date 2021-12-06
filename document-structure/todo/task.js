@@ -3,34 +3,20 @@ const tasksAdd = document.querySelector('#tasks__add');
 const tasksList = document.querySelector('#tasks__list');
 
 const storageName = 'Netology-tasks';
-let tasksArray = [];
-let taskCounter = 0;
 tasksAdd.setAttribute('title','Создать задачу');
-const loaded = loadContent(storageName);
-if (loaded) {
-    tasksArray = loaded;
-    tasksArray.forEach(o => {
-        createTask(o.name, o.id);
-        taskCounter = o.id + 1;
-    });
-}
-// console.log(tasksArray);
+loadContent(storageName);
 
 tasksAdd.addEventListener('click', (evt) => {
     evt.preventDefault();
     const taskName = tasksInput.value;
-    const taskId = taskCounter++;
-    if (!taskName) { return; }
-    createTask(taskName, taskId);
-    tasksArray.push({
-        id: taskId,
-        name: taskName
-    });
-    saveContent(tasksArray, storageName);
+    if (!taskName.trim()) { return; }
+    tasksInput.value = '';
+    createTask(taskName);
+    saveContent(storageName);
 });
 
 // Создание одной задачи
-function createTask(taskName, taskId) {
+function createTask(taskName) {
     const task = document.createElement('div');
     task.classList.add('task')
     task.innerHTML = `<div class="task__title">
@@ -39,27 +25,28 @@ function createTask(taskName, taskId) {
     <a href="#" class="task__remove">&times;</a>`;
     tasksList.appendChild(task);
     task.setAttribute('title','Удалить задачу');
-    task.dataset['taskId'] = taskId;
+    setTaskEvents(task);
+}
+
+// Обработчик событий для созданной задачи
+function setTaskEvents(task) {
     task.querySelector('.task__remove').addEventListener('click', (evt) => {
         evt.preventDefault();
         task.remove();
-        const index = tasksArray.findIndex(o => o.id === taskId);
-        if (index > -1) {
-            tasksArray.splice(index, 1);
-            saveContent(tasksArray, storageName);
-        }
+        saveContent(storageName);
     });
 }
 
 // Загрузка задач
 function loadContent(name) {
     const loaded = JSON.parse(localStorage.getItem(name));
-    return loaded;
+    tasksList.innerHTML = loaded;
+    const tasks = tasksList.querySelectorAll('.task');
+    tasks.forEach(o => { setTaskEvents(o); });
 }
 
 // Сохранение задач
-function saveContent(obj, name) {
-    // const string = `{arr:${JSON.stringify(obj)}}`;
-    const string = JSON.stringify(obj);
+function saveContent(name) {
+    const string = JSON.stringify(tasksList.innerHTML);
     localStorage.setItem(name, string);
 }
