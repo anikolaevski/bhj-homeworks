@@ -1,34 +1,24 @@
 const form = document.getElementById('form');
+const fileInput = document.getElementById('file');
+const fileDesc = document.querySelector(".input__wrapper-desc");
 const progress = document.getElementById('progress');
-const sendButton = document.getElementById('send');
 
+form.setAttribute('enctype', 'multipart/form-data');
 
-sendButton.addEventListener('click', (evt) => {
+form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(form);
-    const file = document.getElementById('file').value;
-    formData.append('file', file);
-    console.log('formData=', formData);
-    
+    const file = fileInput.files[0];
+    const fileName = fileDesc.textContent
+    formData.append('file', file, fileName);
     let xhr=new XMLHttpRequest();
-
-    xhr.onreadystatechange = function (req) {
-        // console.log(16, this.readyState, this.getResponseHeader('content-length'));
-        console.log(16, this.readyState, this.getAllResponseHeaders());
-    };
-
-    xhr.onprogress = function(event) {
-        // console.log(event.currentTarget);
-        // const totalBytes = event.currentTarget.getResponseHeader('content-length');
+    xhr.upload.onprogress = function(event) {
         const {loaded, total} = event; 
-        // console.log( 'Получено с сервера ' + loaded + ' байт из ' + total );
-        const x = 1;
+        progress.value = Math.round((loaded / total) * 100) / 100;
+        fileDesc.textContent = `${fileName}  ${loaded}/${total}`;
+        // console.log( 'Загружено ' + loaded + ' байт из ' + total, progress.value );
     }
-
-    xhr.open('POST', 'https://netology-slow-rest.herokuapp.com/upload.php', true);
-    xhr.setRequestHeader('Content-Type','application/json');
+    xhr.open('POST', form.getAttribute('action'), true);
     xhr.send(formData);
-    
-
-
 });
+
