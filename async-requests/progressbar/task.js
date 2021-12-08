@@ -13,13 +13,15 @@ sendButton.addEventListener('click', (evt) => {
     let xhr=new XMLHttpRequest();
 
     xhr.onreadystatechange = function (req) {
-        console.log(this.readyState, this);
+        // console.log(16, this.readyState, this.getResponseHeader('content-length'));
+        console.log(16, this.readyState, this.getAllResponseHeaders());
     };
 
     xhr.onprogress = function(event) {
-        console.log(event.currentTarget);
-        const totalBytes = event.currentTarget.getResponseHeader('content-length');
-        console.log( 'Получено с сервера ' + event.loaded + ' байт из ' + totalBytes );
+        // console.log(event.currentTarget);
+        // const totalBytes = event.currentTarget.getResponseHeader('content-length');
+        const {loaded, total} = event; 
+        // console.log( 'Получено с сервера ' + loaded + ' байт из ' + total );
         const x = 1;
     }
 
