@@ -1,6 +1,6 @@
 const storageName = 'Netology-editor';
 const editor = document.getElementById('editor');
-editor.insertAdjacentHTML('afterend','<button id="clear__button">Очистить</button>')
+editor.insertAdjacentHTML('afterend','<button id="clear__button">Очистить</button>');
 
 editor.addEventListener('input', function(evt) {
     evt.preventDefault();
