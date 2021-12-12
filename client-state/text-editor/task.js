@@ -10,7 +10,7 @@ editor.addEventListener('input', function(evt) {
 document.getElementById('clear__button').addEventListener('click', function(evt) {
     evt.preventDefault();
     editor.value = '';
-    saveContent('');
+    clearContent();
 });
 
 function loadContent() {
@@ -24,6 +24,10 @@ function loadContent() {
 
 function saveContent(value) {
     localStorage.setItem(storageName, value);
+}
+
+function clearContent() {
+    localStorage.removeItem(storageName);
 }
 
 loadContent();
