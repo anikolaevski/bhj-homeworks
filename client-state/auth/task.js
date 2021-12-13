@@ -1,12 +1,12 @@
 const storageName = 'Netology_User';
 const form = document.getElementById('signin__form');
-const user_id = document.getElementById('user_id');
+const signin = document.getElementById('signin');
 const welcome = document.getElementById('welcome');
+welcome.insertAdjacentHTML('beforeend','<button class="btn" id="signoff__btn">Выйти</button>');
 welcome.insertAdjacentHTML('afterend','<p id="error_message" class="welcome">Неверный логин/пароль</p>');
 const errorMessage = document.getElementById('error_message');
-const signinBtn = document.getElementById('signin__btn');
-signinBtn.insertAdjacentHTML('afterend','<button id="signoff__btn" style="margin-left:15px;">Выйти</button>');
 
+// Логин
 form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const formData = new FormData(form);
@@ -16,10 +16,16 @@ form.addEventListener('submit', (evt) => {
             const obj = JSON.parse(this.responseText);
             // console.log(obj);
             if (obj.success) {
-                showWelcome(obj.user_id);
+                switchState({
+                    text: obj.user_id,
+                    success: true
+                });
                 localStorage.setItem(storageName, obj.user_id);
             } else {
-                showWelcome();
+                switchState({
+                    text: '',
+                    success: false
+                });
                 localStorage.removeItem(storageName);
             }
             form.reset();
@@ -29,28 +35,44 @@ form.addEventListener('submit', (evt) => {
     xhr.send(formData);
 });
 
+// Нажатие на кнопку "Выйти"
 document.getElementById('signoff__btn').addEventListener('click', function(evt) {
     evt.preventDefault();
-    welcome.classList.remove('welcome_active');
-    errorMessage.classList.remove('welcome_active');
+    switchState({
+        text: '',
+        success: true
+    });
     form.reset();
     localStorage.removeItem(storageName);
 });
 
-function showWelcome(text) {
-    if (text) {
-        user_id.textContent = text;
+// Переключение состояния экрана
+function switchState(obj) {
+    if (obj.success && obj.text) {
+        // Успешный логин
+        document.getElementById('user_id').textContent = obj.text;
         welcome.classList.add('welcome_active');
         errorMessage.classList.remove('welcome_active');
+        signin.classList.add('welcome');
+    } else if (obj.success) {
+        // Выход
+        welcome.classList.remove('welcome_active');
+        errorMessage.classList.remove('welcome_active');
+        signin.classList.remove('welcome');
     } else {
+        // Неуспешный логин
         welcome.classList.remove('welcome_active');
         errorMessage.classList.add('welcome_active');
+        signin.classList.remove('welcome');           
     }
 }
 
 window.onload = function() {
     const userId = localStorage.getItem(storageName);
     if (userId && userId.trim()) {
-        showWelcome(userId);
+        switchState({
+            text: userId,
+            success: true
+        });
     }
 }
